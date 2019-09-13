@@ -19,6 +19,9 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
+
 import de.ollie.archimedes.alexandrian.gui.statusbar.StatusBar;
 
 /**
@@ -40,6 +43,12 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenuItem menuItemQuit = null;
 	private StatusBar statusBar = null;
+
+	private static ConfigurableApplicationContext ctx = null;
+
+	public static void main(String[] args) {
+		ctx = new SpringApplicationBuilder(ApplicationFrame.class).headless(false).run(args);
+	}
 
 	/**
 	 * Creates and opens a new application main frame.

@@ -28,4 +28,10 @@ public class StatusBarTest {
 		assertThat(l.getText(), equalTo("Null problemo!"));
 	}
 
+	@DisplayName("Position field on status bar shows the mouse position on the DiagramComponent.")
+	@Test
+	public void statusBar_ShowsTheCurrentMousePositionInTheDiagramComponentOnPositionField() {
+
+	}
+
 }
