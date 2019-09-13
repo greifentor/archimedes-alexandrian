@@ -19,9 +19,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponent;
+import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponentListener;
+import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseMovedEvent;
 import de.ollie.archimedes.alexandrian.gui.statusbar.StatusBar;
 
 /**
@@ -30,21 +34,23 @@ import de.ollie.archimedes.alexandrian.gui.statusbar.StatusBar;
  * @author ollie (12.09.2019)
  *
  */
-public class ApplicationFrame extends JFrame implements ActionListener {
+public class ApplicationFrame extends JFrame implements ActionListener, DiagramComponentListener {
 
 	public static SystemExiter systemExiter = new SystemExiter() {
 	};
 
+	static Logger log = Logger.getLogger(ApplicationFrame.class);
+
 	private static final int HGAP = 3;
 	private static final int VGAP = 3;
+
+	private static ConfigurableApplicationContext ctx = null;
 
 	private DiagramComponent diagramComponent = new DiagramComponent();
 	private JPanel panelMain = new JPanel();
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenuItem menuItemQuit = null;
 	private StatusBar statusBar = null;
-
-	private static ConfigurableApplicationContext ctx = null;
 
 	public static void main(String[] args) {
 		ctx = new SpringApplicationBuilder(ApplicationFrame.class).headless(false).run(args);
@@ -84,6 +90,7 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 	private JPanel createPanelMain() {
 		JPanel p = new JPanel(new BorderLayout(HGAP, VGAP));
 		p.add(this.diagramComponent);
+		this.diagramComponent.addDiagramComponentListener(this);
 		return p;
 	}
 
@@ -107,6 +114,11 @@ public class ApplicationFrame extends JFrame implements ActionListener {
 		if (e.getSource() == this.menuItemQuit) {
 			ApplicationFrame.systemExiter.exit(0);
 		}
+	}
+
+	@Override
+	public void mouseMoved(MouseMovedEvent event) {
+		this.statusBar.updateMousePosition(event.getMouseX(), event.getMouseY());
 	}
 
 }
