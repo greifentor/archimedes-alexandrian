@@ -1,10 +1,13 @@
 package de.ollie.archimedes.alexandrian.gui;
 
+import lombok.Generated;
+
 /**
  * An interface for a class which exits the application.
  *
  * @author ollie (12.09.2019)
  */
+@Generated // To get it away from coverage computing.
 public interface SystemExiter {
 
 	/**

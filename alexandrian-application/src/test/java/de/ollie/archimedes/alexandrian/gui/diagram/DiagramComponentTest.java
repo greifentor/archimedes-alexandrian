@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.sameInstance;
 
 import org.apache.log4j.Logger;
 import org.junit.jupiter.api.AfterEach;
@@ -98,4 +99,42 @@ public class DiagramComponentTest {
 
 	}
 
+	@DisplayName("DiagramComponentMode tests.")
+	@Nested
+	class DiagramComponentModeTests {
+
+		@DisplayName("Accepts a null value as diagram component mode.")
+		@Test
+		void setDiagramComponentMode_PassANullValue_SetsNullAsMode() {
+			// Prepare
+			DiagramComponentMode expected = null;
+			// Run
+			unitUnderTest.setDiagramComponentMode(expected);
+			// Check
+			assertThat(unitUnderTest.getDiagramComponentMode(), equalTo(expected));
+		}
+
+		@DisplayName("Set the diagram component mode.")
+		@Test
+		void setDiagramComponentMode_PassADiagramComponentMode_SetsThePassedMode() {
+			// Prepare
+			DiagramComponentMode expected = DiagramComponentMode.INSERT;
+			// Run
+			unitUnderTest.setDiagramComponentMode(expected);
+			// Check
+			assertThat(unitUnderTest.getDiagramComponentMode(), equalTo(expected));
+		}
+
+		@DisplayName("Returns the diagram component.")
+		@Test
+		void setDiagramComponentMode_ReturnsTheDiagramComponent() {
+			// Prepare
+			DiagramComponentMode expected = DiagramComponentMode.INSERT;
+			// Run
+			DiagramComponent returned = unitUnderTest.setDiagramComponentMode(expected);
+			// Check
+			assertThat(returned, sameInstance(unitUnderTest));
+		}
+
+	}
 }

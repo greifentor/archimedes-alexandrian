@@ -20,7 +20,7 @@ import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponent;
  *
  * @author ollie (12.09.2019)
  */
-public class StatusBarTest {
+public class StatusBarIntegrationTest {
 
 	@DisplayName("Status bar is initialized correctly")
 	@Test

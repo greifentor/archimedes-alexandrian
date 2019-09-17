@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponentMode;
+
 /**
  * A component which represents the status bar at the application windows bottom.
  *
@@ -13,6 +15,7 @@ import javax.swing.JPanel;
  */
 public class StatusBar extends JPanel {
 
+	private JLabel labelDiagramComponentMode = new JLabel("");
 	private JLabel labelMousePosition = new JLabel("");
 	private JLabel labelStatusMessage = new JLabel("");
 
@@ -35,6 +38,9 @@ public class StatusBar extends JPanel {
 		p.add(this.labelMousePosition);
 		this.labelMousePosition.setName("StatusBar:MousePosition");
 		this.labelMousePosition.setText("(0, 0)");
+		p.add(this.labelDiagramComponentMode);
+		this.labelDiagramComponentMode.setName("StatusBar:DiagramComponentMode");
+		this.labelDiagramComponentMode.setText("");
 		return p;
 	}
 
@@ -44,6 +50,15 @@ public class StatusBar extends JPanel {
 		this.labelStatusMessage.setName("StatusBar:StatusMessage");
 		this.labelStatusMessage.setText(statusMessage);
 		return p;
+	}
+
+	/**
+	 * Updates the current diagram component mode.
+	 * 
+	 * @param mode The new current diagram component mode.
+	 */
+	public void updateDiagramComponentMode(DiagramComponentMode mode) {
+		this.labelDiagramComponentMode.setText(mode.name());
 	}
 
 	/**

@@ -18,15 +18,26 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ComponentScan;
 
 import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponent;
 import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponentListener;
+import de.ollie.archimedes.alexandrian.gui.diagram.DiagramComponentMode;
+import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseClickEvent;
 import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseMovedEvent;
 import de.ollie.archimedes.alexandrian.gui.statusbar.StatusBar;
+import de.ollie.archimedes.alexandrian.service.ModelService;
+import de.ollie.archimedes.alexandrian.service.exception.PersistenceException;
+import de.ollie.archimedes.alexandrian.service.persistence.port.ModelPersistencePort;
+import de.ollie.archimedes.alexandrian.service.persistence.port.PersistenceMode;
+import de.ollie.archimedes.alexandrian.service.so.TableGUIInfo;
+import de.ollie.archimedes.alexandrian.service.so.TableSO;
 
 /**
  * The main frame of the application.
@@ -34,6 +45,7 @@ import de.ollie.archimedes.alexandrian.gui.statusbar.StatusBar;
  * @author ollie (12.09.2019)
  *
  */
+@ComponentScan("de.ollie")
 public class ApplicationFrame extends JFrame implements ActionListener, DiagramComponentListener {
 
 	public static SystemExiter systemExiter = new SystemExiter() {
@@ -49,12 +61,19 @@ public class ApplicationFrame extends JFrame implements ActionListener, DiagramC
 	private DiagramComponent diagramComponent = new DiagramComponent();
 	private JPanel panelMain = new JPanel();
 	private JMenuBar menuBar = new JMenuBar();
+	private JMenuItem menuItemCreateTable = null;
 	private JMenuItem menuItemQuit = null;
+	private JMenuItem menuItemSave = null;
 	private StatusBar statusBar = null;
 
 	public static void main(String[] args) {
 		ctx = new SpringApplicationBuilder(ApplicationFrame.class).headless(false).run(args);
 	}
+
+	@Autowired
+	private ModelService modelService;
+	@Autowired
+	private ModelPersistencePort modelPersistencePort;
 
 	/**
 	 * Creates and opens a new application main frame.
@@ -81,9 +100,19 @@ public class ApplicationFrame extends JFrame implements ActionListener, DiagramC
 		JMenu menuFile = createMenu("File");
 		menuFile.setName("Menu:File");
 		this.menuBar.add(menuFile);
+		this.menuItemSave = createMenuItem("Save");
+		this.menuItemSave.setName("MenuItem:File|Save");
+		menuFile.add(this.menuItemSave);
+		menuFile.add(new JSeparator(JSeparator.HORIZONTAL));
 		this.menuItemQuit = createMenuItem("Quit");
 		this.menuItemQuit.setName("MenuItem:File|Quit");
 		menuFile.add(this.menuItemQuit);
+		JMenu menuDiagram = createMenu("Diagram");
+		menuDiagram.setName("Menu:Diagram");
+		this.menuBar.add(menuDiagram);
+		this.menuItemCreateTable = createMenuItem("Create Table");
+		this.menuItemCreateTable.setName("MenuItem:Diagram|CreateTable");
+		menuDiagram.add(this.menuItemCreateTable);
 		this.setJMenuBar(this.menuBar);
 	}
 
@@ -111,8 +140,26 @@ public class ApplicationFrame extends JFrame implements ActionListener, DiagramC
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == this.menuItemQuit) {
+		if (e.getSource() == this.menuItemCreateTable) {
+			this.diagramComponent.setDiagramComponentMode(DiagramComponentMode.INSERT);
+			this.statusBar.updateDiagramComponentMode(this.diagramComponent.getDiagramComponentMode());
+		} else if (e.getSource() == this.menuItemQuit) {
 			ApplicationFrame.systemExiter.exit(0);
+		} else if (e.getSource() == this.menuItemSave) {
+			try {
+				this.modelPersistencePort.persist(this.modelService.getModel(), PersistenceMode.XML);
+			} catch (PersistenceException pe) {
+				log.error("error persisting database model: " + pe.getMessage() + ", cause: " + pe.getCause());
+			}
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseClickEvent event) {
+		if (event.getMode() == DiagramComponentMode.INSERT) {
+			TableGUIInfo guiInfo = new TableGUIInfo().setX(event.getMouseX()).setY(event.getMouseY());
+			TableSO table = new TableSO().setName("Table0").setGuiInfo(guiInfo);
+			this.modelService.addTable(table);
 		}
 	}
 

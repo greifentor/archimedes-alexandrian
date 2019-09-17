@@ -5,6 +5,7 @@ import java.awt.Container;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
 import org.netbeans.jemmy.operators.JFrameOperator;
@@ -19,9 +20,10 @@ import org.netbeans.jemmy.operators.JMenuOperator;
 public class ITUtil {
 
 	public static void clickQuitMenuItem(JFrameOperator frame) {
-		JMenuOperator menuApplication = new JMenuOperator(frame, "File");
-		menuApplication.doClick();
-		JMenuItemOperator menuItemQuit = new JMenuItemOperator(frame, "Quit");
+		JMenuOperator menuFile = new JMenuOperator((JMenu) findComponent("Menu:File", frame.getWindow()));
+		menuFile.doClick();
+		JMenuItemOperator menuItemQuit = new JMenuItemOperator(
+				(JMenuItem) findComponent("MenuItem:File|Quit", menuFile.getComponent()));
 		menuItemQuit.doClick();
 	}
 
@@ -47,41 +49,51 @@ public class ITUtil {
 		if (root instanceof JMenuBar) {
 			menuBar = (JMenuBar) root;
 			for (i = 0, leni = menuBar.getMenuCount(); i < leni; i++) {
-				result = findComponent(cn, menuBar.getMenu(i));
-				if (result != null) {
-					break;
+				if (menuBar.getMenu(i) != null) {
+					result = findComponent(cn, menuBar.getMenu(i));
+					if (result != null) {
+						break;
+					}
 				}
 			}
 		} else if (root instanceof JMenu) {
 			menu = (JMenu) root;
 			for (i = 0, leni = menu.getMenuComponentCount(); i < leni; i++) {
-				result = findComponent(cn, menu.getMenuComponent(i));
-				if (result != null) {
-					break;
+				if (menu.getMenuComponent(i) != null) {
+					result = findComponent(cn, menu.getMenuComponent(i));
+					if (result != null) {
+						break;
+					}
 				}
 			}
 			if (result != null) {
 				for (i = 0, leni = menu.getItemCount(); i < leni; i++) {
-					result = findComponent(cn, menu.getItem(i));
-					if (result != null) {
-						break;
+					if (menu.getItem(i) != null) {
+						result = findComponent(cn, menu.getItem(i));
+						if (result != null) {
+							break;
+						}
 					}
 				}
 			}
 		} else if (root instanceof JToolBar) {
 			toolBar = (JToolBar) root;
 			for (i = 0, leni = toolBar.getComponentCount(); i < leni; i++) {
-				result = findComponent(cn, toolBar.getComponentAtIndex(i));
-				if (result != null) {
-					break;
+				if (toolBar.getComponentAtIndex(i) != null) {
+					result = findComponent(cn, toolBar.getComponentAtIndex(i));
+					if (result != null) {
+						break;
+					}
 				}
 			}
 		} else if (root instanceof Container) {
 			cont = (Container) root;
 			for (i = 0, leni = cont.getComponentCount(); i < leni; i++) {
-				result = findComponent(cn, cont.getComponent(i));
-				if (result != null) {
-					break;
+				if (cont.getComponent(i) != null) {
+					result = findComponent(cn, cont.getComponent(i));
+					if (result != null) {
+						break;
+					}
 				}
 			}
 		}
