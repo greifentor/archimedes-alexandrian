@@ -2,7 +2,8 @@ package de.ollie.archimedes.alexandrian.service.impl;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 import de.ollie.archimedes.alexandrian.service.ModelService;
@@ -18,7 +19,7 @@ import de.ollie.archimedes.alexandrian.service.so.TableSO;
 @Service
 public class ModelServiceImpl implements ModelService {
 
-	static Logger log = Logger.getLogger(ModelServiceImpl.class);
+	static Logger log = LogManager.getLogger(ModelServiceImpl.class);
 
 	private DatabaseSO model = null;
 

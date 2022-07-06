@@ -10,7 +10,8 @@ import java.util.List;
 
 import javax.swing.JComponent;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseClickEvent;
 import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseMovedEvent;
@@ -22,7 +23,7 @@ import de.ollie.archimedes.alexandrian.gui.diagram.event.MouseMovedEvent;
  */
 public class DiagramComponent extends JComponent implements MouseListener, MouseMotionListener {
 
-	static Logger log = Logger.getLogger(DiagramComponent.class);
+	static Logger log = LogManager.getLogger(DiagramComponent.class);
 
 	private DiagramComponentMode mode = DiagramComponentMode.INSERT;
 	private List<DiagramComponentListener> listeners = new ArrayList<>();

@@ -5,7 +5,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import de.ollie.archimedes.alexandrian.persistence.converter.DatabaseSOToXMLStringConverter;
@@ -23,7 +24,7 @@ import de.ollie.archimedes.alexandrian.service.so.DatabaseSO;
 @Component
 public class XMLModelPersistenceAdapter implements ModelPersistencePort {
 
-	static Logger log = Logger.getLogger(XMLModelPersistenceAdapter.class);
+	static Logger log = LogManager.getLogger(XMLModelPersistenceAdapter.class);
 
 	public DatabaseSOToXMLStringConverter converter = new DatabaseSOToXMLStringConverter(
 			new TableSOToXMLStringConverter());

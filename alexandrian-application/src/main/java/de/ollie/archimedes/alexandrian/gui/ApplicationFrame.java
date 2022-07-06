@@ -20,7 +20,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -51,7 +52,7 @@ public class ApplicationFrame extends JFrame implements ActionListener, DiagramC
 	public static SystemExiter systemExiter = new SystemExiter() {
 	};
 
-	static Logger log = Logger.getLogger(ApplicationFrame.class);
+	static Logger log = LogManager.getLogger(ApplicationFrame.class);
 
 	private static final int HGAP = 3;
 	private static final int VGAP = 3;
