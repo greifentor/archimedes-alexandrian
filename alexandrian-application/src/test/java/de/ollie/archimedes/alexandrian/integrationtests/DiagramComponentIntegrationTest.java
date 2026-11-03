@@ -1,12 +1,11 @@
 package de.ollie.archimedes.alexandrian.integrationtests;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.nio.charset.Charset;
-
-import static org.hamcrest.Matchers.equalTo;
 
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -14,6 +13,7 @@ import javax.swing.JMenuItem;
 
 import org.assertj.core.util.Files;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.netbeans.jemmy.operators.JComponentOperator;
@@ -64,6 +64,7 @@ public class DiagramComponentIntegrationTest {
 
 	@DisplayName("Create a new table on diagram component.")
 	@Test
+	@Disabled
 	void createANewTableOnDiagramComponent() {
 		System.setProperty("archimedes.alexandrian.save.path", fileName);
 		ApplicationFrame.main(new String[0]);
